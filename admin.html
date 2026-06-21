@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>לוח בקרה - שמשון</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <h1>לוח בקרה</h1>
+      <p>הזן סיסמה כדי לגשת למערכת הניהול</p>
+      <input type="password" id="passwordInput" placeholder="סיסמה" autocomplete="off">
+      <div class="error" id="loginError">סיסמה שגויה</div>
+      <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;">כניסה</button>
+      <div class="hint">ברירת מחדל: admin123</div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>שמשון<span>.</span> ניהול</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active" data-section="dashboard"><span class="icon">~</span><span>ראשי</span></a>
+      <a href="#" data-section="hero"><span class="icon">!</span><span>עמוד הבית</span></a>
+      <a href="#" data-section="about"><span class="icon">@</span><span>אודות</span></a>
+      <a href="#" data-section="services"><span class="icon">#</span><span>שירותים</span></a>
+      <a href="#" data-section="contact"><span class="icon">$</span><span>צור קשר</span></a>
+      <a href="#" data-section="projects"><span class="icon">%</span><span>פרויקטים</span></a>
+      <a href="#" data-section="settings"><span class="icon">*</span><span>הגדרות</span></a>
+    </nav>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+
+    <!-- Dashboard -->
+    <section class="admin-section active" id="section-dashboard">
+      <div class="page-header">
+        <h1>ראשי</h1>
+        <div class="actions">
+          <button class="btn btn-primary" id="saveAllBtn">שמור הכל</button>
+        </div>
+      </div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="admin-card">
+        <h2>ברוך הבא ללוח הבקרה</h2>
+        <p style="color:var(--admin-text-secondary);line-height:1.7;">מכאן תוכלו לערוך את כל תוכן האתר בקלות. בחרו קטגוריה מהתפריט השמאלי והתחילו לערוך. כל השינויים נשמרים אוטומטית בדפדפן ומוצגים מיד באתר.</p>
+        <p style="color:var(--admin-text-secondary);line-height:1.7;margin-top:8px;"><strong>טיפ:</strong> לאחר ביצוע שינויים, לחצו על "שמור הכל" כדי לוודא שהכל נשמר. תוכלו לרענן את דפי האתר ולצפות בשינויים.</p>
+      </div>
+      <div class="admin-card danger-zone">
+        <h2>ייצוא ואיפוס</h2>
+        <p style="color:var(--admin-text-secondary);margin-bottom:16px;">ייצאו את כל הנתונים לקובץ JSON לגיבוי, או אפסו את כל התוכן לברירת המחדל.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-success" id="exportBtn">ייצא JSON</button>
+          <button class="btn btn-warning" id="importBtn">ייבא JSON</button>
+          <button class="btn btn-danger" id="resetBtn">אפס לברירת מחדל</button>
+        </div>
+        <input type="file" id="importFileInput" accept=".json" style="display:none;">
+      </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="admin-section" id="section-hero">
+      <div class="page-header">
+        <h1>עמוד הבית</h1>
+        <div class="actions">
+          <button class="btn btn-primary save-section-btn" data-section="hero">שמור</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>תגית עליונה</h2>
+        <div class="form-group">
+          <label>טקסט התגית</label>
+          <input type="text" id="hero-tag" data-path="hero.tag">
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>כותרת ראשית (Hero)</h2>
+        <div class="form-group">
+          <label>כותרת</label>
+          <textarea id="hero-title" data-path="hero.title" rows="3"></textarea>
+          <div class="hint">ניתן להשתמש ב-&lt;br&gt; למעבר שורה</div>
+        </div>
+        <div class="form-group">
+          <label>תת-כותרת</label>
+          <textarea id="hero-subtitle" data-path="hero.subtitle" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>כפתורי CTA</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>טקסט כפתור ראשי</label>
+            <input type="text" id="hero-cta1" data-path="hero.cta1">
+          </div>
+          <div class="form-group">
+            <label>קישור כפתור ראשי</label>
+            <input type="text" id="hero-cta1Link" data-path="hero.cta1Link">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>טקסט כפתור משני</label>
+            <input type="text" id="hero-cta2" data-path="hero.cta2">
+          </div>
+          <div class="form-group">
+            <label>קישור כפתור משני</label>
+            <input type="text" id="hero-cta2Link" data-path="hero.cta2Link">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="admin-section" id="section-about">
+      <div class="page-header">
+        <h1>אודות</h1>
+        <div class="actions">
+          <button class="btn btn-primary save-section-btn" data-section="about">שמור</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>כותרת</h2>
+        <div class="form-group">
+          <label>כותרת העמוד</label>
+          <textarea id="about-title" data-path="about.title" rows="2"></textarea>
+          <div class="hint">ניתן להשתמש ב-&lt;br&gt; למעבר שורה</div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>פסקאות תיאור</h2>
+        <div class="form-group">
+          <label>פסקה 1</label>
+          <textarea id="about-p1" data-path="about.paragraphs.0" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>פסקה 2</label>
+          <textarea id="about-p2" data-path="about.paragraphs.1" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>פסקה 3</label>
+          <textarea id="about-p3" data-path="about.paragraphs.2" rows="4"></textarea>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>כלים טכניים</h2>
+        <div id="toolsEditor"></div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-sm" id="addToolBtn">+ הוסף כלי</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>ביוגרפיה</h2>
+        <div class="form-group">
+          <label>ביוגרפיה</label>
+          <textarea id="about-bio" data-path="about.bio" rows="6"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="admin-section" id="section-services">
+      <div class="page-header">
+        <h1>שירותים</h1>
+        <div class="actions">
+          <button class="btn btn-primary save-section-btn" data-section="services">שמור</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>טקסט מבוא</h2>
+        <div class="form-group">
+          <label>טקסט מבוא</label>
+          <textarea id="services-intro" data-path="services.intro" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>שלבי תהליך העבודה</h2>
+        <div id="processEditor"></div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-sm" id="addProcessBtn">+ הוסף שלב</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>פלח קהל יעד</h2>
+        <div class="form-group">
+          <label>כותרת</label>
+          <input type="text" id="services-targetTitle" data-path="services.targetTitle">
+        </div>
+        <div class="form-group">
+          <label>תיאור</label>
+          <textarea id="services-targetDescription" data-path="services.targetDescription" rows="4"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="admin-section" id="section-contact">
+      <div class="page-header">
+        <h1>צור קשר</h1>
+        <div class="actions">
+          <button class="btn btn-primary save-section-btn" data-section="contact">שמור</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>כותרת ותיאור</h2>
+        <div class="form-group">
+          <label>כותרת</label>
+          <input type="text" id="contact-heading" data-path="contact.heading">
+        </div>
+        <div class="form-group">
+          <label>תיאור</label>
+          <textarea id="contact-description" data-path="contact.description" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>פרטי התקשרות</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>אימייל</label>
+            <input type="email" id="contact-email" data-path="contact.email">
+          </div>
+          <div class="form-group">
+            <label>טלפון</label>
+            <input type="text" id="contact-phone" data-path="contact.phone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>מיקום</label>
+          <input type="text" id="contact-location" data-path="contact.location">
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>רשתות חברתיות</h2>
+        <div id="socialEditor"></div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-sm" id="addSocialBtn">+ הוסף רשת חברתית</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>תוויות טופס</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>תווית שם</label>
+            <input type="text" id="contact-formName" data-path="contact.formLabels.name">
+          </div>
+          <div class="form-group">
+            <label>תווית אימייל</label>
+            <input type="text" id="contact-formEmail" data-path="contact.formLabels.email">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>תווית הודעה</label>
+            <input type="text" id="contact-formMessage" data-path="contact.formLabels.message">
+          </div>
+          <div class="form-group">
+            <label>תווית שלח</label>
+            <input type="text" id="contact-formSubmit" data-path="contact.formLabels.submit">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="admin-section" id="section-projects">
+      <div class="page-header">
+        <h1>פרויקטים</h1>
+        <div class="actions">
+          <button class="btn btn-primary" id="addProjectBtn">+ פרויקט חדש</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <table class="projects-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>כותרת</th>
+              <th>קטגוריה</th>
+              <th>לקוח</th>
+              <th>שנה</th>
+              <th>פעולות</th>
+            </tr>
+          </thead>
+          <tbody id="projectsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="admin-section" id="section-settings">
+      <div class="page-header">
+        <h1>הגדרות</h1>
+        <div class="actions">
+          <button class="btn btn-primary save-section-btn" data-section="settings">שמור</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>הגדרות אתר</h2>
+        <div class="form-group">
+          <label>שם האתר</label>
+          <input type="text" id="settings-siteName" data-path="site.name">
+        </div>
+        <div class="form-group">
+          <label>תגית</label>
+          <input type="text" id="settings-siteTagline" data-path="site.tagline">
+        </div>
+        <div class="form-group">
+          <label>תיאור האתר</label>
+          <textarea id="settings-siteDescription" data-path="site.description" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>כותרות מקרה בוחן</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>כותרת אתגר</label>
+            <input type="text" id="settings-challengeHeading">
+          </div>
+          <div class="form-group">
+            <label>כותרת פתרון</label>
+            <input type="text" id="settings-solutionHeading">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>כותרת תוצאה</label>
+          <input type="text" id="settings-resultHeading">
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>תגיות קטגוריה</h2>
+        <p style="color:var(--admin-text-secondary);font-size:0.85rem;margin-bottom:16px;">ניהול תגיות הקטגוריה. שים לב: מחיקת תגית תשפיע על כל הפרויקטים שמשתמשים בה.</p>
+        <div id="categoriesEditor"></div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-sm" id="addCategoryBtn">+ הוסף תגית</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>Footer</h2>
+        <div class="form-group">
+          <label>טקסט זכויות יוצרים</label>
+          <input type="text" id="settings-footerCopyright" data-path="site.name">
+          <div class="hint">יוצג כ: &copy; 2026 [הטקסט שלך]</div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>סיסמת ניהול</h2>
+        <div class="form-group">
+          <label>סיסמה חדשה</label>
+          <input type="text" id="settings-newPassword" placeholder="השאר ריק לשמירת הסיסמה הנוכחית">
+          <div class="hint">סיסמה נוכחית: admin123</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Project Edit Modal -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal">
+      <h2 id="modalTitle">עריכת פרויקט</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>כותרת</label>
+          <input type="text" id="proj-title">
+        </div>
+        <div class="form-group">
+          <label>קטגוריה</label>
+          <select id="proj-category"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>תג (tag)</label>
+          <input type="text" id="proj-tag">
+        </div>
+        <div class="form-group">
+          <label>לקוח</label>
+          <input type="text" id="proj-client">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>שירות</label>
+          <input type="text" id="proj-service">
+        </div>
+        <div class="form-group">
+          <label>שנה</label>
+          <input type="text" id="proj-year">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>תיאור קצר</label>
+          <input type="text" id="proj-description">
+        </div>
+        <div class="form-group">
+          <label>תמונה</label>
+          <input type="text" id="proj-image" placeholder="assets/example.jpg">
+          <div class="hint">הכנס כתובת URL או נתיב לקובץ ב-assets/</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>או העלה תמונה מהמחשב</label>
+        <input type="file" id="proj-imageUpload" accept="image/*">
+        <div class="hint">התמונה תומר לקובץ base64 (מומלץ לתמונות קטנות)</div>
+        <div id="proj-imagePreview" style="margin-top:8px;max-width:200px;display:none;"></div>
+      </div>
+      <div style="background:var(--admin-input-bg);padding:16px;border-radius:6px;margin:16px 0;border:1px solid var(--admin-border);">
+        <h3 style="font-size:0.9rem;font-weight:600;margin:0 0 12px;">כותרות מותאמות אישית (אופציונלי)</h3>
+        <p style="font-size:0.8rem;color:var(--admin-text-secondary);margin-bottom:12px;">אם תרצה כותרות שונות מברירת המחדל לפרויקט זה בלבד</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>כותרת אתגר</label>
+            <input type="text" id="proj-challengeHeading" placeholder="השאר ריק לברירת מחדל">
+          </div>
+          <div class="form-group">
+            <label>כותרת פתרון</label>
+            <input type="text" id="proj-solutionHeading" placeholder="השאר ריק לברירת מחדל">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>כותרת תוצאה</label>
+          <input type="text" id="proj-resultHeading" placeholder="השאר ריק לברירת מחדל">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>אתגר</label>
+        <textarea id="proj-challenge" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>פתרון</label>
+        <textarea id="proj-solution" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>תוצאה (טקסט)</label>
+        <textarea id="proj-result" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>תוצאות מספריות - הזן כל שורה כ: מספר|תווית</label>
+        <textarea id="proj-results" rows="3" placeholder="לדוגמה:&#10;40%|עליה במעורבות&#10;3x|חשיפה אורגנית&#10;95%|המלצות חיוביות"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="modalCancel">ביטול</button>
+        <button class="btn btn-primary" id="modalSave">שמור פרויקט</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
